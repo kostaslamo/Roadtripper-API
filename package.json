@@ -1,0 +1,19 @@
+{
+  "name": "API",
+  "version": "1.0.0",
+  "description": "Broadcaster's API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Kostas Lamogiannis",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "eslint": "^5.16.0",
+    "express": "^4.16.4",
+    "log4js": "^4.1.0",
+    "nodemon": "^1.18.11"
+  }
+}
