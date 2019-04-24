@@ -1,6 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const log4js = require('log4js');
+const dbFunctions = require('./db');
+
+dbFunctions.init().then((db) => {
+  global.DB = db;
+  console.log('DB initiated')
+}).catch(dbErr => {
+  console.log(`Error initiating Database ${JSON.stringify(dbErr)}`);
+});
 
 const logger = log4js.getLogger();
 logger.level = 'debug';
