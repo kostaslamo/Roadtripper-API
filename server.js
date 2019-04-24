@@ -3,12 +3,11 @@ const bodyParser = require('body-parser');
 const log4js = require('log4js');
 const dbFunctions = require('./db');
 
-dbFunctions.init().then((db) => {
-  global.DB = db;
-  console.log('DB initiated')
-}).catch(dbErr => {
-  console.log(`Error initiating Database ${JSON.stringify(dbErr)}`);
-});
+/* Initiate DB */
+dbFunctions.init();
+
+/* Require Paths */
+const users = require('./core/users');
 
 const logger = log4js.getLogger();
 logger.level = 'debug';
@@ -25,6 +24,9 @@ app.use((req, res, next) => {
   console.log('Incoming Request');
   next();
 });
+
+/* Routes */
+app.use('/users', users);
 
 app.get('/', (req, res) => {
   res.json({ msg: 'OK' }).status(200);

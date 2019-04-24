@@ -1,4 +1,4 @@
-const massive = require('massive');
+const Sequelize = require('sequelize');
 
 const rds = {
   host: process.env.RDS_HOST,
@@ -8,26 +8,25 @@ const rds = {
   pass: process.env.RDS_PASS,
 };
 
-const init = () => new Promise((resolve, reject) => {
-  massive({
-    host: rds.host,
-    port: rds.port,
-    database: rds.db,
-    user: rds.user,
-    password: rds.pass,
-  }).then(resolve)
-    .catch(reject);
-});
+// const init = () => new Promise((resolve, reject) => {
+//   massive({
+//     host: rds.host,
+//     port: rds.port,
+//     database: rds.db,
+//     user: rds.user,
+//     password: rds.pass,
+//   }).then(resolve)
+//     .catch(reject);
+// });
 
-const clear = db => new Promise((res, rej) => {
-  if (process.env.NODE_ENV === 'test') {
-    db.clearDB().then(res).catch(rej);
-  } else {
-    rej(Error('Operation not supported fo this enviroemnt'));
-  }
-});
+const init = () => {
+  global.DB = new Sequelize(rds.db, rds.user, rds.pass, {
+    host: rds.host,
+    dialect: 'postgres'
+  });
+}
+
 
 module.exports = {
   init,
-  clear,
 };
