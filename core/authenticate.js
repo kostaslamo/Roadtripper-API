@@ -20,14 +20,16 @@ router.post('/', (req, res) => {
           expiresIn: 1440 // expires in 24 hours
         });
         res.json({
-          message: 'Authenticated',
-          token: token
+          status: 'OK',
+          data: {
+            token,
+          },
         });
       } else {
-        res.json({ errCode: 'pass', message: 'Invalid password' });
+        res.json({ status: 'FAILED', data: { message: 'Invalid password', errCode: 'pass' } });
       }
     } else {
-      res.json({ errCode: 'email', message: 'Email not found!' })
+      res.json({ status: 'FAILED', data: { message: 'Email not found!', errCode: 'email' } });
     }
   });
 });

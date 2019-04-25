@@ -1,21 +1,23 @@
 const express = require('express');
+const { encrypt } = require('../services/encryptDecrypt');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
   DB.users.find().then((usersData) => {
-    res.json({ data: usersData}).status(200);
-  });
+    res.json({ status: 'OK', data: usersData}).status(200);
+  }).catch(err => res.json({ status: 'FAILED', err: JSON.stringify( err) }));
 });
 
 router.post('/', (req, res) => {
   const { email, passwordDigest, phone, firstname, lastname, gender, dob, notes, metadata } = req.body;
-  const { signup = false } = req.query;
-  // If it is First time signup verify email address
-  if (signup) {
-
+  if (email && passwordDigest) {
+    const encryptedPass = encrypt(passwordDigest);
+    DB.users.insert({ email, password_digest: encryptedPass, phone, firstname, lastname, gender, dob, notes, metadata })
+      .then((user) => res.json({ status: 'OK', data: user }))
+      .catch((err) => res.json({ status: 'FAILED', err: JSON.stringify(err) }));
   } else {
-
+    res.json({ status: 'FAILED', data: { message: 'Please provide both email and password' }});
   }
 })
 
