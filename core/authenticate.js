@@ -7,8 +7,8 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
   const { email, password } = req.body;
-  DB.query('select email, password_digest from users').then((userData) => {
-    const data = userData[0];
+  DB.users.find().then((userData) => {
+    const data = userData;
     const emails = data.map(d => d.email);
     const passwords = data.map(d => decrypt(d.password_digest));
     if (email && emails.indexOf(email) !== -1) {
@@ -24,12 +24,18 @@ router.post('/', (req, res) => {
           token: token
         });
       } else {
-        res.json({ message: "please check your password !" });
+        res.json({ errCode: 'pass', message: 'Invalid password' });
       }
     } else {
-      res.json({message:"user not found !"})
+      res.json({ errCode: 'email', message: 'Email not found!' })
     }
   });
+});
+
+router.post('/encrypt', (req, res) => {
+  const { text } = req.body;
+  const encryptedText = encrypt(text);
+  res.json({ encryptedText });
 });
 
 module.exports = router;

@@ -1,13 +1,18 @@
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
+const massive = require('massive');
 const config = require('../configurations/config');
 
-const init = () => {
-  global.DB = new Sequelize(config.rds.db, config.rds.user, config.rds.pass, {
+const init = () => new Promise((resolve, reject) => {
+  massive({
     host: config.rds.host,
-    dialect: config.rds.dialeg,
-  });
-}
+    port: config.rds.port,
+    database: config.rds.db,
+    user: config.rds.user,
+    password: config.rds.pass,
+  }).then(resolve)
+    .catch(reject);
+});
 
 module.exports = {
-  init,
+  init
 };
