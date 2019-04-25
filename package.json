@@ -1,5 +1,5 @@
 {
-  "name": "API",
+  "name": "api",
   "version": "1.0.0",
   "description": "Roadtripper's API",
   "main": "server.js",
