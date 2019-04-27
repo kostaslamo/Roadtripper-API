@@ -6,9 +6,10 @@ const config = require('./configurations/config');
 const dbFunctions = require('./db');
 
 /* Initiate DB */
-dbFunctions.init()
-  .then((db) => global.DB = db)
-  .catch(err => console.log(`Error logging in DB ${JSON.stringify(err)}`));
+dbFunctions.init().then((db) => {
+    logger.info('DB initiated!')
+    global.DB = db
+  }).catch(err => console.log(`Error logging in DB ${JSON.stringify(err)}`));
 
 /* Require Paths */
 const authenticate = require('./core/authenticate');

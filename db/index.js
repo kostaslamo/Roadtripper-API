@@ -3,14 +3,18 @@ const massive = require('massive');
 const config = require('../configurations/config');
 
 const init = () => new Promise((resolve, reject) => {
+  console.log('rds', JSON.stringify(config.rds));
   massive({
     host: config.rds.host,
     port: config.rds.port,
     database: config.rds.db,
     user: config.rds.user,
     password: config.rds.pass,
-  }).then(resolve)
-    .catch(reject);
+  }).then((db) => {
+    resolve(db)
+  }).catch((err) => {
+    reject(err);
+  });
 });
 
 module.exports = {
