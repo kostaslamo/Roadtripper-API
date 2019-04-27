@@ -41,8 +41,8 @@ router.post('/encrypt', (req, res) => {
 });
 
 router.post('/decrypt', (req, res) => {
-  const { text } = req.body;
-  const decryptedText = decrypt(text);
+  const { text, secret } = req.body;
+  const decryptedText = decrypt(text, secret);
   res.json({ decryptedText });
 });
 

@@ -13,11 +13,11 @@ const encrypt = (text) => {
   return `${iv.toString('hex')}:${encrypted.toString('hex')}`;
 };
 
-const decrypt = (text) => {
+const decrypt = (text, secret) => {
   const textParts = text.split(':');
   const iv = new Buffer(textParts.shift(), 'hex');
   const encryptedText = new Buffer(textParts.join(':'), 'hex');
-  const decipher = crypto.createDecipheriv('aes-256-cbc', new Buffer(ENCRYPTION_KEY), iv);
+  const decipher = crypto.createDecipheriv('aes-256-cbc', new Buffer(secret), iv);
   let decrypted = decipher.update(encryptedText);
 
  decrypted = Buffer.concat([decrypted, decipher.final()]);
