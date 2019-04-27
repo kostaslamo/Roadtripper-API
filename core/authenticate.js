@@ -40,4 +40,10 @@ router.post('/encrypt', (req, res) => {
   res.json({ encryptedText });
 });
 
+router.post('/decrypt', (req, res) => {
+  const { text } = req.body;
+  const decryptedText = decrypt(text);
+  res.json({ decryptedText });
+});
+
 module.exports = router;
