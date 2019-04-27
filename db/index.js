@@ -3,7 +3,6 @@ const massive = require('massive');
 const config = require('../configurations/config');
 
 const init = () => new Promise((resolve, reject) => {
-  console.log('rds', JSON.stringify(config.rds));
   massive({
     host: config.rds.host,
     port: config.rds.port,

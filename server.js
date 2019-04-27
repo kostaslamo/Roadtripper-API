@@ -64,8 +64,8 @@ app.use('/authenticate', authenticate);
 /* Protected Routes */
 app.use('/api/users', users);
 
-app.get('/', (req, res) => {
-  res.json({ msg: 'OK' }).status(200);
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Service is Up and Running!' }).status(200);
 });
 
 app.listen(port, () => {
