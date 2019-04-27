@@ -34,6 +34,14 @@ router.post('/', (req, res) => {
   });
 });
 
+/* Sign JWT Token with username & password and then for admin endpoints verify admin username & pass from env variables */ 
+router.post('/admin', (req, res) => {
+  const { username, password } = req.body;
+  if (username && password) {
+
+  }
+});
+
 router.post('/encrypt', (req, res) => {
   const { text } = req.body;
   const encryptedText = encrypt(text);

@@ -13,3 +13,8 @@ Feel free to create a localhost Postgres DB, clone the repo and start a server o
 For questions just email me.
 
 More endpoints coming soon.
+
+### TO Do
+1. Remove privillage from getting all users using user access token
+
+2. Cannot decrypt password with just providing the password

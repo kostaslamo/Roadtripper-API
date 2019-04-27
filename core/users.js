@@ -3,12 +3,6 @@ const { encrypt } = require('../services/encryptDecrypt');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  DB.users.find().then((usersData) => {
-    res.json({ status: 'OK', data: usersData}).status(200);
-  }).catch(err => res.json({ status: 'FAILED', err: JSON.stringify( err) }));
-});
-
 router.get('/byId/:id', (req, res) => {
   const { id } = req.params;
   DB.users.findOne({ id }).then((usersData) => {
