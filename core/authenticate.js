@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
   DB.users.find().then((userData) => {
     const data = userData;
     const emails = data.map(d => d.email);
-    const passwords = data.map(d => decrypt(d.password_digest));
+    const passwords = data.map(d => decrypt(d.password_digest, config.encryptionTextKey));
     if (email && emails.indexOf(email) !== -1) {
       if (password && passwords.indexOf(password) !== -1) {
         const payload = {
