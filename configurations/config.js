@@ -1,6 +1,9 @@
 module.exports = {
   secret : process.env.API_SECRET,
   encryptionTextKey: process.env.ENCRYPTION_TEXT_KEY,
+  adminSecret: process.env.ADMIN_SECRET,
+  adminUsername: process.env.ADMIN_USERNAME,
+  adminPassword: process.env.ADMIN_PASSWORD,
   rds : {
     dialeg: 'postgres',
     host: process.env.RDS_HOST,
