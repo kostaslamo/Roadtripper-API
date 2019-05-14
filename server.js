@@ -86,8 +86,17 @@ AdminRoutes.use((req, res, next) => {
         return res.json({ message: 'invalid token' });    
       } else {
         // if everything is good, save to request for use in other routes
-        req.decoded = decoded;
-        next();
+        const { password, username } = decoded;
+        if (password && username) {
+          if (password === config.adminPassword && username === config.adminUsername) {
+            /* User is admin */
+            next();
+          } else {
+            res.json({ status: 'FAILED', message: 'Username & password provided in token creation does not belong to an admin' });
+          }
+        } else {
+          res.json({ status: 'FAILED', message: 'Unexpected Error occured' });
+        }
       }
     });
   } else {

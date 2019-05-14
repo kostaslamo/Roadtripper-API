@@ -36,7 +36,17 @@ router.post('/user', (req, res) => {
 router.post('/admin', (req, res) => {
   const { username, password } = req.body;
   if (username && password) {
-    
+    const token = jwt.sign({ username, password }, config.adminSecret, {
+      expiresIn: '1h' // expires in 1 hour
+    });
+    res.json({
+      status: 'OK',
+      data: {
+        token,
+      },
+    });
+  } else {
+    res.json({ status: 'FAILED', data: { message: 'You should provide both username & password' } });
   }
 });
 
