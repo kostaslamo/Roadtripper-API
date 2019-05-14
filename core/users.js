@@ -3,13 +3,6 @@ const { encrypt } = require('../services/encryptDecrypt');
 
 const router = express.Router();
 
-router.get('/byId/:id', (req, res) => {
-  const { id } = req.params;
-  DB.users.findOne({ id }).then((usersData) => {
-    res.json({ status: 'OK', data: usersData}).status(200);
-  }).catch(err => res.json({ status: 'FAILED', err: JSON.stringify( err) }));
-});
-
 router.post('/', (req, res) => {
   const { email, passwordDigest, phone, firstname, lastname, gender, dob, notes, metadata } = req.body;
   if (email && passwordDigest) {
@@ -21,5 +14,15 @@ router.post('/', (req, res) => {
     res.json({ status: 'FAILED', data: { message: 'Please provide both email and password' }});
   }
 });
+
+router.get('/data', (req, res) => { 
+  if (req.decoded) {
+    const { user } = req.decoded;
+    delete user.password_digest;
+    res.json({ status: 'OK', data: { user } });
+  } else {
+    res.json({ status: 'FAILED', data: { message: 'User not found' }});
+  }
+})
 
 module.exports = router;

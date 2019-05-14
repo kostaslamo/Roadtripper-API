@@ -5,18 +5,16 @@ const { encrypt, decrypt } = require('../services/encryptDecrypt');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/user', (req, res) => {
   const { email, password } = req.body;
   DB.users.find().then((userData) => {
     const data = userData;
     const emails = data.map(d => d.email);
     const passwords = data.map(d => decrypt(d.password_digest, config.encryptionTextKey));
+    const user = data.find(user => user.email === email && password === decrypt(user.password_digest, config.encryptionTextKey));
     if (email && emails.indexOf(email) !== -1) {
       if (password && passwords.indexOf(password) !== -1) {
-        const payload = {
-          check:  true
-        };
-        const token = jwt.sign(payload, config.secret, {
+        const token = jwt.sign({ user }, config.secret, {
           expiresIn: 1440 // expires in 24 hours
         });
         res.json({
@@ -38,7 +36,7 @@ router.post('/', (req, res) => {
 router.post('/admin', (req, res) => {
   const { username, password } = req.body;
   if (username && password) {
-
+    
   }
 });
 

@@ -38,39 +38,45 @@ app.use('/api', ProtectedRoutes);
 
 app.use('/admin', AdminRoutes);
 
-/* Check if access token provided for protected routes */
+/* Check if user access token provided for protected routes */
 ProtectedRoutes.use((req, res, next) =>{
   // check header for the token
-  const token = req.headers['access-token'];
-  // decode token
-  if (token) {
-    // verifies secret and checks if the token is expired
-    jwt.verify(token, config.secret, (err, decoded) => {      
-      if (err) {
-        return res.json({ message: 'invalid token' });    
-      } else {
-        // if everything is good, save to request for use in other routes
-        if (req.originalUrl === '/api/users/') {
-          if (req.headers.admin && req.headers.admin === process.env.ADMIN) {
-            req.decoded = decoded;
-            next();
-          } else {
-            res.json({ status: 'ERROR', msg: 'Non Admins could not get all users data'});
-          }
-        } else {
-          req.decoded = decoded;
-          next();
-        }
-      }
-    });
+  if (req.originalUrl === '/api/users' && req.method === 'POST') {
+    next();
   } else {
-    // if there is no token  
-    res.send({ 
-      message: 'No token provided.' 
-    });
+    const token = req.headers['access-token'];
+    // decode token
+    if (token) {
+      // verifies secret and checks if the token is expired
+      jwt.verify(token, config.secret, (err, decoded) => {      
+        if (err) {
+          return res.json({ message: 'invalid token' });    
+        } else {
+          // if everything is good, save to request for use in other routes
+          if (req.originalUrl === '/api/users/') {
+            if (req.headers.admin && req.headers.admin === process.env.ADMIN) {
+              req.decoded = decoded;
+              next();
+            } else {
+              res.json({ status: 'ERROR', msg: 'Non Admins could not get all users data'});
+            }
+          } else {
+            req.decoded = decoded;
+            console.log('req decoded', req.decoded);
+            next();
+          }
+        }
+      });
+    } else {
+      // if there is no token  
+      res.send({ 
+        message: 'No token provided.' 
+      });
+    }
   }
 });
 
+/* Check if admin access token is provided for admin routes */
 AdminRoutes.use((req, res, next) => {
   const token = req.headers['admin-access-token'];
   if (token) {
