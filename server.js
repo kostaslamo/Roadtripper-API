@@ -1,9 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const log4js = require('log4js');
 const config = require('./configurations/config');
 const dbFunctions = require('./db');
+
+const logger = log4js.getLogger();
+logger.level = 'debug';
 
 /* Initiate DB */
 dbFunctions.init().then((db) => {
@@ -15,9 +19,6 @@ dbFunctions.init().then((db) => {
 const authenticate = require('./core/authenticate');
 const users = require('./core/users');
 const admin = require('./core/admin');
-
-const logger = log4js.getLogger();
-logger.level = 'debug';
 
 const app = express();
 const ProtectedRoutes = express.Router();
